@@ -1,6 +1,17 @@
 import { describe, expect, it } from 'vitest';
 
-import { getPokemonGeneration, random } from './numberMgt';
+import {
+   getGenerationPokemonIds,
+   getPokemonGeneration,
+   getPokemonIdsList,
+   getRandomPokemonId,
+   POKEMON_GEN_1_COUNT,
+   POKEMON_GEN_2_COUNT,
+   POKEMON_GEN_3_COUNT,
+   POKEMON_GEN_7_COUNT,
+   POKEMON_GEN_8_COUNT,
+   random,
+} from './numberMgt';
 
 describe('numberMgt', () => {
    describe('random', () => {
@@ -152,6 +163,102 @@ describe('numberMgt', () => {
       failedSamples.forEach(({ title, id }) => {
          it(title, () => {
             expect(() => getPokemonGeneration(id)).toThrowError();
+         });
+      });
+   });
+
+   describe('getGenerationPokemonIds', () => {
+      const samples = [
+         {
+            title: 'should return the correct ids array for generation 1',
+            generation: 1,
+            expected: Array.from({ length: POKEMON_GEN_1_COUNT }).map((_, i) => i + 1),
+         },
+         {
+            title: 'should return the correct ids array for generation 2',
+            generation: 2,
+            expected: Array.from({ length: POKEMON_GEN_2_COUNT - POKEMON_GEN_1_COUNT }).map(
+               (_, i) => i + 1 + POKEMON_GEN_1_COUNT,
+            ),
+         },
+         {
+            title: 'should return the correct ids array for generation 8',
+            generation: 8,
+            expected: Array.from({ length: POKEMON_GEN_8_COUNT - POKEMON_GEN_7_COUNT }).map(
+               (_, i) => i + 1 + POKEMON_GEN_7_COUNT,
+            ),
+         },
+      ];
+
+      samples.forEach(({ title, generation, expected }) => {
+         it(title, () => {
+            expect(getGenerationPokemonIds(generation)).toEqual(expected);
+         });
+      });
+   });
+
+   describe('getPokemonIdsList', () => {
+      const samples = [
+         {
+            title: 'should return an empty array for an empty array',
+            generations: [],
+            expected: [],
+         },
+         {
+            title: 'should return an empty array for an array with only one generation',
+            generations: [1],
+            expected: Array.from({ length: POKEMON_GEN_1_COUNT }).map((_, i) => i + 1),
+         },
+         {
+            title: 'should return the correct array for an array with multiple generations',
+            generations: [1, 2, 8],
+            expected: [
+               ...Array.from({ length: POKEMON_GEN_1_COUNT }).map((_, i) => i + 1),
+               ...Array.from({ length: POKEMON_GEN_2_COUNT - POKEMON_GEN_1_COUNT }).map(
+                  (_, i) => i + 1 + POKEMON_GEN_1_COUNT,
+               ),
+               ...Array.from({ length: POKEMON_GEN_8_COUNT - POKEMON_GEN_7_COUNT }).map(
+                  (_, i) => i + 1 + POKEMON_GEN_7_COUNT,
+               ),
+            ],
+         },
+      ];
+
+      samples.forEach(({ title, generations, expected }) => {
+         it(title, () => {
+            expect(getPokemonIdsList(generations)).toEqual(expected);
+         });
+      });
+   });
+
+   describe('getRandomPokemonId', () => {
+      const samples = [
+         {
+            title: 'should return a random id for an empty array',
+            generations: [],
+            min: 1,
+            max: POKEMON_GEN_8_COUNT,
+         },
+         {
+            title: 'should return a random id for an array with only one generation',
+            generations: [1],
+            min: 1,
+            max: POKEMON_GEN_1_COUNT,
+         },
+         {
+            title: 'should return a random id for an array with multiple generations',
+            generations: [2, 3],
+            min: POKEMON_GEN_1_COUNT + 1,
+            max: POKEMON_GEN_3_COUNT,
+         },
+      ];
+
+      samples.forEach(({ title, generations, min, max }) => {
+         it(title, () => {
+            const value = getRandomPokemonId(generations);
+
+            expect(value).toBeGreaterThanOrEqual(min);
+            expect(value).toBeLessThanOrEqual(max);
          });
       });
    });
