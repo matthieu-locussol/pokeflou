@@ -38,3 +38,5 @@ yarn-error.log*
 /public/data.json
 
 .env
+# Sentry Config File
+.env.sentry-build-plugin
