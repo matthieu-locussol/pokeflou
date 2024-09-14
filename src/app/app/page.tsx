@@ -1,5 +1,7 @@
 import { LogoutLink } from '@kinde-oss/kinde-auth-nextjs/components';
 import { getKindeServerSession } from '@kinde-oss/kinde-auth-nextjs/server';
+import { Button } from '@nextui-org/button';
+import { Input } from '@nextui-org/input';
 import { PokemonImage } from '../../components/PokemonImage';
 import { prisma } from '../../prisma';
 import { _assert } from '../../utils/_assert';
@@ -26,13 +28,18 @@ export default async function App() {
       <div className="flex flex-col">
          <p>App fun</p>
          <p>Hello {user.given_name}!</p>
+         <LogoutLink>Log Out</LogoutLink>
          <p>
             {pokemon.name_fr} ({pokemon.pokemonId})
          </p>
          {Array.from({ length: 5 }).map((_, i) => (
             <PokemonImage key={`guess_${i}`} pokemon={pokemon} blurredIdx={i + 1} />
          ))}
-         <LogoutLink>Log Out</LogoutLink>
+         <form className="flex flex-col gap-4 m-auto">
+            <Input placeholder="Testo" />
+            <Input placeholder="Chesto" />
+            <Button color="primary">Testo</Button>
+         </form>
       </div>
    );
 }
