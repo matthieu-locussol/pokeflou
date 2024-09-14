@@ -2,7 +2,7 @@ import { LogoutLink } from '@kinde-oss/kinde-auth-nextjs/components';
 import { getKindeServerSession } from '@kinde-oss/kinde-auth-nextjs/server';
 import { Button } from '@nextui-org/button';
 import { Input } from '@nextui-org/input';
-import { PokemonImage } from '../../components/PokemonImage';
+import { PokemonImage } from '../../components/pokemon-image';
 import { prisma } from '../../prisma';
 import { _assert } from '../../utils/_assert';
 import { getRandomPokemonId } from '../../utils/numberMgt';
