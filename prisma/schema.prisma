@@ -1,0 +1,31 @@
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["driverAdapters"]
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("POSTGRES_PRISMA_URL")
+  directUrl = env("POSTGRES_URL_NON_POOLING")
+}
+
+model Pokemon {
+  id String @id @default(cuid())
+
+  name_ja String
+  name_ko String
+  name_zh String
+  name_fr String
+  name_de String
+  name_it String
+  name_en String
+  name_es String
+
+  blurred_1 String
+  blurred_2 String
+  blurred_3 String
+  blurred_4 String
+  blurred_5 String
+
+  generation Int
+}
