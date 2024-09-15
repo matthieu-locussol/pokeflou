@@ -50,7 +50,6 @@ export const UserMenu = () => {
                classNames={{
                   description: 'text-default-500',
                }}
-               description="Premium user"
                name={user?.given_name}
             />
          </DropdownTrigger>

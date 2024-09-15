@@ -1,7 +1,7 @@
 {
    "folders": [
       {
-         "name": "Pokeflou ✨",
+         "name": "Pokéflou ✨",
          "path": "."
       }
    ],
@@ -17,7 +17,7 @@
       "files.associations": {
          "*.css": "tailwindcss"
       },
-      "typescript.tsdk": "Pokeflou ✨/node_modules/typescript/lib"
+      "typescript.tsdk": "Pokéflou ✨/node_modules/typescript/lib"
    },
    "extensions": {
       "recommendations": ["dbaeumer.vscode-eslint", "esbenp.prettier-vscode", "eamodio.gitlens"]

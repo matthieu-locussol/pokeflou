@@ -21,6 +21,7 @@ import { useStore } from '../store';
 import { ThemeSwitch } from './theme-switch';
 
 import { CustomIcon } from './icons';
+import { Logo } from './logo';
 import { NavbarDropdown } from './navbar-dropdown';
 import { NavbarLink } from './navbar-link';
 import { NavbarMenuDropdownLink } from './navbar-menu-dropdown';
@@ -73,8 +74,10 @@ export const Navbar = observer(() => {
                   href="/"
                   onClick={() => menuStore.setOpen(false)}
                >
-                  <Icon className="text-xl " icon="noto-v1:flag-for-flag-france" />
-                  <p className="font-bold text-inherit">Frencheers</p>
+                  <Logo />
+                  <p className="font-bold text-inherit font-[family-name:var(--font-pokemon)]">
+                     {siteConfig.title}
+                  </p>
                </NextLink>
             </NavbarBrand>
          </NavbarContent>
