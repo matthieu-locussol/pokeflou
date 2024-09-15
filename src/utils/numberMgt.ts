@@ -65,3 +65,7 @@ export const getRandomPokemonId = (generations: number[]) => {
 
    return pokemonIds[random(0, pokemonIds.length - 1)];
 };
+
+export const formatPokemonId = (id: number) => {
+   return id.toString().padStart(3, '0');
+};
