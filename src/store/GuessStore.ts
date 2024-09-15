@@ -24,8 +24,7 @@ export class GuessStore {
       this.loading = true;
 
       const url = `/api/guess?generations=${generations.join(',')}`;
-      const response = await fetch(url);
-      const pokemon = await response.json();
+      const pokemon = await this._fetcher.fetch(url);
 
       this.pokemon = pokemon;
       this.loading = false;
