@@ -24,7 +24,6 @@ export default function Home() {
             </ol>
 
             <h1 className="text-4xl font-[family-name:var(--font-pokemon)]">Pokémon</h1>
-            <Image src="/apple-icon.png" alt="" width={200} height={200} />
 
             <div className="flex gap-4 items-center flex-col sm:flex-row">
                <a

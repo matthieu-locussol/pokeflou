@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect } from 'react';
-import { PokemonGuessForm } from '../../components/pokemon-guess-form';
+import { PokemonGuessBlock } from '../../components/pokemon-guess-block';
 import { useSafeCallback } from '../../hooks/useSafeCallback';
 import { useStore } from '../../store';
 
@@ -21,7 +21,7 @@ export default function App() {
             <span className="text-primary-500 font-[family-name:var(--font-pokemon)]">Pokémon</span>{' '}
             is this?
          </h1>
-         <PokemonGuessForm />
+         <PokemonGuessBlock />
       </section>
    );
 }
