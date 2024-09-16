@@ -11,11 +11,15 @@ export const PokemonGuessForm = observer(() => {
    return (
       <form className="flex flex-col gap-4">
          <Input
+            autoFocus
             placeholder="E.g. Bulbizarre, Bulbasaur, フシギダネ..."
             radius="sm"
             size="lg"
             disabled={!guessStore.canGuess}
             isDisabled={!guessStore.canGuess}
+            classNames={{
+               input: 'text-center',
+            }}
          />
          <ActionBar />
       </form>

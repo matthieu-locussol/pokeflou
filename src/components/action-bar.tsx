@@ -26,7 +26,7 @@ export const ActionBar = observer(() => {
                radius="sm"
                size="lg"
                fullWidth
-               onClick={() => guessStore.fetchPokemon()}
+               onClick={() => guessStore.fetchPokemon([], true)}
                disabled={!guessStore.canNewGuess}
                isDisabled={!guessStore.canNewGuess}
             >

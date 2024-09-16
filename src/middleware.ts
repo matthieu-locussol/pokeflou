@@ -7,5 +7,5 @@ export default function middleware(request: NextRequest) {
 }
 
 export const config = {
-   matcher: ['/app'],
+   // matcher: ['/app'],
 };

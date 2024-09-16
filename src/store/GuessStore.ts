@@ -14,22 +14,27 @@ export class GuessStore {
 
    public countdown: number = 3;
 
+   public shouldIgnoreSubsequentFetches: boolean = false;
+
    constructor(fetcher: IPokemonFetcher) {
       makeAutoObservable(this);
 
       this._fetcher = fetcher;
    }
 
-   public async fetchPokemon(generations: number[] = []) {
+   public async fetchPokemon(generations: number[] = [], forceFetch: boolean = false) {
       this.loading = true;
 
       const url = `/api/guess?generations=${generations.join(',')}`;
       const pokemon = await this._fetcher.fetch(url);
 
-      this.pokemon = pokemon;
-      this.loading = false;
-      this.blurredIdx = 1;
-      this.countdown = 3;
+      if (!this.shouldIgnoreSubsequentFetches || forceFetch) {
+         this.pokemon = pokemon;
+         this.loading = false;
+         this.blurredIdx = 1;
+         this.countdown = 3;
+         this.shouldIgnoreSubsequentFetches = true;
+      }
    }
 
    public unpixelate() {
@@ -44,6 +49,10 @@ export class GuessStore {
             }
          }, 1000);
       }
+   }
+
+   public setIgnoreSubsequentFetches(ignore: boolean) {
+      this.shouldIgnoreSubsequentFetches = ignore;
    }
 
    public get canGuess(): boolean {
