@@ -14,38 +14,40 @@ export class GuessStore {
 
    public countdown: number = 3;
 
-   public shouldIgnoreSubsequentFetches: boolean = false;
-
    public nameInput: string = '';
 
    public won: boolean = false;
 
-   public generations: number[] = [1];
+   public generations: number[] = [];
+
+   public choseGenerations: boolean = false;
 
    constructor(fetcher: IPokemonFetcher) {
       makeAutoObservable(this);
 
       this._fetcher = fetcher;
+
+      const savedGenerations = localStorage.getItem('generations');
+      if (savedGenerations !== null) {
+         this.generations = JSON.parse(savedGenerations);
+      }
    }
 
-   public async fetchPokemon(generations: number[] = [], forceFetch: boolean = false) {
+   public async fetchPokemon() {
       runInAction(() => {
          this.loading = true;
          this.nameInput = '';
       });
 
-      const url = `/api/guess?generations=${generations.join(',')}`;
+      const url = `/api/guess?generations=${this.generations.join(',')}`;
       const pokemon = await this._fetcher.fetch(url);
 
-      if (!this.shouldIgnoreSubsequentFetches || forceFetch) {
-         runInAction(() => {
-            this.pokemon = pokemon;
-            this.loading = false;
-            this.blurredIdx = 1;
-            this.countdown = 3;
-            this.shouldIgnoreSubsequentFetches = true;
-         });
-      }
+      runInAction(() => {
+         this.pokemon = pokemon;
+         this.loading = false;
+         this.blurredIdx = 1;
+         this.countdown = 3;
+      });
    }
 
    public unpixelate() {
@@ -65,10 +67,6 @@ export class GuessStore {
             }
          }, 1000);
       }
-   }
-
-   public setIgnoreSubsequentFetches(ignore: boolean) {
-      this.shouldIgnoreSubsequentFetches = ignore;
    }
 
    public setNameInput(nameInput: string) {
@@ -99,6 +97,28 @@ export class GuessStore {
       } else {
          this.unpixelate();
       }
+   }
+
+   public setChoseGenerations(chose: boolean) {
+      this.choseGenerations = chose;
+
+      this.fetchPokemon();
+   }
+
+   public setGeneration(generation: number, checked: boolean) {
+      if (checked) {
+         if (!this.generations.includes(generation)) {
+            this.generations.push(generation);
+         }
+      } else {
+         this.generations = this.generations.filter((g) => g !== generation);
+      }
+
+      localStorage.setItem('generations', JSON.stringify(this.generations));
+   }
+
+   public get canStartGame(): boolean {
+      return this.generations.length > 0;
    }
 
    public get canGuess(): boolean {
