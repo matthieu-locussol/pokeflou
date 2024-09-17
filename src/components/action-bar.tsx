@@ -13,7 +13,14 @@ export const ActionBar = observer(() => {
       <div className="flex justify-between gap-4">
          {guessStore.canGuess && (
             <>
-               <Button variant="shadow" color="primary" radius="sm" size="lg">
+               <Button
+                  variant="shadow"
+                  color="primary"
+                  radius="sm"
+                  size="lg"
+                  type="submit"
+                  onClick={() => guessStore.guess()}
+               >
                   Submit
                </Button>
                <ButtonNoIdea />
@@ -26,7 +33,7 @@ export const ActionBar = observer(() => {
                radius="sm"
                size="lg"
                fullWidth
-               onClick={() => guessStore.fetchPokemon([], true)}
+               onClick={() => guessStore.fetchPokemon(guessStore.generations, true)}
                disabled={!guessStore.canNewGuess}
                isDisabled={!guessStore.canNewGuess}
             >

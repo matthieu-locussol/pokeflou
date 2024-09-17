@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect } from 'react';
+import { Fireworks } from '../components/fireworks';
 import { PokemonGuessBlock } from '../components/pokemon-guess-block';
 import { useSafeCallback } from '../hooks/useSafeCallback';
 import { useStore } from '../store';
@@ -8,7 +9,7 @@ import { useStore } from '../store';
 export default function App() {
    const { guessStore } = useStore();
 
-   const fetchPokemon = useSafeCallback(() => guessStore.fetchPokemon());
+   const fetchPokemon = useSafeCallback(() => guessStore.fetchPokemon(guessStore.generations));
 
    useEffect(() => {
       fetchPokemon();
@@ -22,6 +23,7 @@ export default function App() {
             is this?
          </h1>
          <PokemonGuessBlock />
+         <Fireworks />
       </section>
    );
 }

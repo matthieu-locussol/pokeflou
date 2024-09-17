@@ -1,7 +1,7 @@
 import { Pokemon } from '@prisma/client';
-import { makeAutoObservable } from 'mobx';
+import { makeAutoObservable, runInAction } from 'mobx';
 import { IPokemonFetcher } from '../adapters/PokemonFetcher';
-import { toUpperCaseFirst } from '../utils/stringMgt';
+import { formatPokemonName, toUpperCaseFirst } from '../utils/stringMgt';
 
 export class GuessStore {
    private _fetcher: IPokemonFetcher;
@@ -16,6 +16,12 @@ export class GuessStore {
 
    public shouldIgnoreSubsequentFetches: boolean = false;
 
+   public nameInput: string = '';
+
+   public won: boolean = false;
+
+   public generations: number[] = [1];
+
    constructor(fetcher: IPokemonFetcher) {
       makeAutoObservable(this);
 
@@ -23,26 +29,36 @@ export class GuessStore {
    }
 
    public async fetchPokemon(generations: number[] = [], forceFetch: boolean = false) {
-      this.loading = true;
+      runInAction(() => {
+         this.loading = true;
+         this.nameInput = '';
+      });
 
       const url = `/api/guess?generations=${generations.join(',')}`;
       const pokemon = await this._fetcher.fetch(url);
 
       if (!this.shouldIgnoreSubsequentFetches || forceFetch) {
-         this.pokemon = pokemon;
-         this.loading = false;
-         this.blurredIdx = 1;
-         this.countdown = 3;
-         this.shouldIgnoreSubsequentFetches = true;
+         runInAction(() => {
+            this.pokemon = pokemon;
+            this.loading = false;
+            this.blurredIdx = 1;
+            this.countdown = 3;
+            this.shouldIgnoreSubsequentFetches = true;
+         });
       }
    }
 
    public unpixelate() {
       this.blurredIdx = this.blurredIdx + 1;
+      this.triggerCountdownIfNeeded();
+   }
 
+   public triggerCountdownIfNeeded() {
       if (!this.canGuess) {
          const intervalId = setInterval(() => {
-            this.countdown = this.countdown - 1;
+            runInAction(() => {
+               this.countdown = this.countdown - 1;
+            });
 
             if (this.countdown <= 0) {
                clearInterval(intervalId);
@@ -53,6 +69,36 @@ export class GuessStore {
 
    public setIgnoreSubsequentFetches(ignore: boolean) {
       this.shouldIgnoreSubsequentFetches = ignore;
+   }
+
+   public setNameInput(nameInput: string) {
+      this.nameInput = nameInput;
+   }
+
+   public isNameValid(): boolean {
+      return this.pokemonValidName === formatPokemonName(this.nameInput);
+   }
+
+   public setValidResult() {
+      this.nameInput = '';
+      this.blurredIdx = 5;
+      this.won = true;
+
+      this.triggerCountdownIfNeeded();
+
+      setTimeout(() => {
+         runInAction(() => {
+            this.won = false;
+         });
+      }, 2800);
+   }
+
+   public guess() {
+      if (this.isNameValid()) {
+         this.setValidResult();
+      } else {
+         this.unpixelate();
+      }
    }
 
    public get canGuess(): boolean {
@@ -81,5 +127,13 @@ export class GuessStore {
 
    public get canNewGuess(): boolean {
       return this.countdown === 0 && !this.loading;
+   }
+
+   public get pokemonValidName(): string {
+      if (this.pokemon === null) {
+         return '???';
+      }
+
+      return formatPokemonName(this.pokemon.name_fr);
    }
 }
