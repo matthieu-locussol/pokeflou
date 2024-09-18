@@ -3,7 +3,6 @@ import { join } from 'path';
 import { z } from 'zod';
 import { prisma } from '../prisma';
 import { getPokemonGeneration, POKEMON_GEN_8_COUNT } from '../utils/numberMgt';
-import { decodePokemonName } from '../utils/stringMgt';
 
 const POKEMON_COUNT = POKEMON_GEN_8_COUNT;
 
@@ -65,20 +64,21 @@ export const migrateData = async () => {
 
    await prisma.pokemon.createMany({
       data: Object.entries(records).map(([id, { names, data }]) => ({
-         name_ja: decodePokemonName(names.ja),
-         name_ko: decodePokemonName(names.ko),
-         name_zh: decodePokemonName(names.zh),
-         name_fr: decodePokemonName(names.fr),
-         name_de: decodePokemonName(names.de),
-         name_it: decodePokemonName(names.it),
-         name_en: decodePokemonName(names.en),
-         name_es: decodePokemonName(names.es),
+         name_ja: names.ja,
+         name_ko: names.ko,
+         name_zh: names.zh,
+         name_fr: names.fr,
+         name_de: names.de,
+         name_it: names.it,
+         name_en: names.en,
+         name_es: names.es,
          blurred_1: data['1'],
          blurred_2: data['2'],
          blurred_3: data['3'],
          blurred_4: data['4'],
          blurred_5: data['7'],
          generation: getPokemonGeneration(+id),
+         pokemonId: +id,
       })),
       skipDuplicates: true,
    });
