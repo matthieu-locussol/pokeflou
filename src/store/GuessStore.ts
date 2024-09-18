@@ -1,7 +1,7 @@
 import { Pokemon } from '@prisma/client';
 import { makeAutoObservable, runInAction } from 'mobx';
 import { IPokemonFetcher } from '../adapters/PokemonFetcher';
-import { formatPokemonName, toUpperCaseFirst } from '../utils/stringMgt';
+import { decodePokemonName, formatPokemonName, toUpperCaseFirst } from '../utils/stringMgt';
 
 export class GuessStore {
    private _fetcher: IPokemonFetcher;
@@ -137,7 +137,7 @@ export class GuessStore {
          return '???';
       }
 
-      return toUpperCaseFirst(this.pokemon.name_fr);
+      return toUpperCaseFirst(decodePokemonName(this.pokemon.name_fr));
    }
 
    public get newGuessDisplayedText(): string {
@@ -157,6 +157,6 @@ export class GuessStore {
          return '???';
       }
 
-      return formatPokemonName(this.pokemon.name_fr);
+      return formatPokemonName(decodePokemonName(this.pokemon.name_fr));
    }
 }
