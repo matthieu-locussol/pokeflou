@@ -31,6 +31,8 @@ model Pokemon {
 
   generation Int
 
+  guesses Guess[]
+
   @@unique([pokemonId])
 }
 
@@ -39,46 +41,21 @@ model User {
 
   kindeId String
 
-  guesses_gen1_1 Int @default(0)
-  guesses_gen1_2 Int @default(0)
-  guesses_gen1_3 Int @default(0)
-  guesses_gen1_4 Int @default(0)
-  guesses_gen1_5 Int @default(0)
-  guesses_gen2_1 Int @default(0)
-  guesses_gen2_2 Int @default(0)
-  guesses_gen2_3 Int @default(0)
-  guesses_gen2_4 Int @default(0)
-  guesses_gen2_5 Int @default(0)
-  guesses_gen3_1 Int @default(0)
-  guesses_gen3_2 Int @default(0)
-  guesses_gen3_3 Int @default(0)
-  guesses_gen3_4 Int @default(0)
-  guesses_gen3_5 Int @default(0)
-  guesses_gen4_1 Int @default(0)
-  guesses_gen4_2 Int @default(0)
-  guesses_gen4_3 Int @default(0)
-  guesses_gen4_4 Int @default(0)
-  guesses_gen4_5 Int @default(0)
-  guesses_gen5_1 Int @default(0)
-  guesses_gen5_2 Int @default(0)
-  guesses_gen5_3 Int @default(0)
-  guesses_gen5_4 Int @default(0)
-  guesses_gen5_5 Int @default(0)
-  guesses_gen6_1 Int @default(0)
-  guesses_gen6_2 Int @default(0)
-  guesses_gen6_3 Int @default(0)
-  guesses_gen6_4 Int @default(0)
-  guesses_gen6_5 Int @default(0)
-  guesses_gen7_1 Int @default(0)
-  guesses_gen7_2 Int @default(0)
-  guesses_gen7_3 Int @default(0)
-  guesses_gen7_4 Int @default(0)
-  guesses_gen7_5 Int @default(0)
-  guesses_gen8_1 Int @default(0)
-  guesses_gen8_2 Int @default(0)
-  guesses_gen8_3 Int @default(0)
-  guesses_gen8_4 Int @default(0)
-  guesses_gen8_5 Int @default(0)
+  guesses Guess[]
 
   @@unique([kindeId])
+}
+
+model Guess {
+  id String @id @default(cuid())
+
+  user   User   @relation(fields: [userId], references: [kindeId])
+  userId String
+
+  pokemon   Pokemon @relation(fields: [pokemonId], references: [id])
+  pokemonId String
+
+  won        Boolean
+  blurredIdx Int
+  date       DateTime @default(now())
 }

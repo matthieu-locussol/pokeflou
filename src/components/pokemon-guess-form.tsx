@@ -4,18 +4,19 @@ import { Icon } from '@iconify/react';
 import { Input } from '@nextui-org/input';
 import { observer } from 'mobx-react-lite';
 import { FormEvent } from 'react';
+import { useSaveUserData } from '../hooks/useSaveUserData';
 import { useStore } from '../store';
 import { ActionBar } from './action-bar';
 
 export const PokemonGuessForm = observer(() => {
    const { guessStore } = useStore();
+   const { saveUserData } = useSaveUserData();
 
    const onSubmit = (e: FormEvent<HTMLFormElement>) => {
       e.preventDefault();
 
-      if (guessStore.isNameValid()) {
-         guessStore.setValidResult();
-      }
+      guessStore.guess();
+      saveUserData();
    };
 
    return (

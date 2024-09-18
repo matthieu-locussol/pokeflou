@@ -13,14 +13,7 @@ export const ActionBar = observer(() => {
       <div className="flex justify-between gap-4">
          {guessStore.canGuess && (
             <>
-               <Button
-                  variant="shadow"
-                  color="primary"
-                  radius="sm"
-                  size="lg"
-                  type="submit"
-                  onClick={() => guessStore.guess()}
-               >
+               <Button variant="shadow" color="primary" radius="sm" size="lg" type="submit">
                   Submit
                </Button>
                <ButtonNoIdea />

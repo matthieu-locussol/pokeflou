@@ -22,6 +22,8 @@ export class GuessStore {
 
    public choseGenerations: boolean = false;
 
+   public wonBlurredIdx: number = 5;
+
    constructor(fetcher: IPokemonFetcher) {
       makeAutoObservable(this);
 
@@ -79,6 +81,7 @@ export class GuessStore {
 
    public setValidResult() {
       this.nameInput = '';
+      this.wonBlurredIdx = this.blurredIdx;
       this.blurredIdx = 5;
       this.won = true;
 

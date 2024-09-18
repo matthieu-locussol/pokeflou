@@ -33,6 +33,7 @@ export const VersionCard = observer(({ generation }: VersionCardProps) => {
                width={96}
                height={96}
                className="rounded-md"
+               priority
             />
             <h2 className="text-center">Generation {generation}</h2>
          </div>
