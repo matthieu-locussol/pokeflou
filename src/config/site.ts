@@ -48,9 +48,13 @@ export const siteConfig: SiteConfig = {
    },
    navItems: [
       {
+         label: 'Play',
+         href: '/',
+         isVisible: () => true,
+      },
+      {
          label: 'Leaderboard',
          href: '/leaderboard',
-         icon: 'solar:pen-new-square-bold-duotone',
          isVisible: () => true,
       },
    ],
@@ -61,7 +65,6 @@ export const siteConfig: SiteConfig = {
             href: '/stats',
             icon: 'solar:settings-bold-duotone',
             description: 'Visualize your statistics',
-            disabled: true,
             isVisible: (isLoading, isAuthenticated) => !isLoading && isAuthenticated === true,
          },
       ],
