@@ -23,6 +23,8 @@ export const useSaveUserData = () => {
 
                const formData = new FormData();
                formData.append('userId', id);
+               formData.append('firstname', user.given_name || '');
+               formData.append('lastname', user.family_name || '');
                formData.append('pokemonId', pokemon.id);
                formData.append('won', won.toString());
                formData.append(

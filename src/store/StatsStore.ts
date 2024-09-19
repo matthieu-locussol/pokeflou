@@ -65,7 +65,7 @@ export class StatsStore {
             correct,
             incorrect,
             total,
-            ratio: total === 0 ? 'N/A' : `${Math.round((correct / total) * 100)}%`,
+            ratio: total === 0 ? 'N/A' : `${Math.round((correct / total) * 10000) / 100}%`,
          };
       });
 
@@ -81,7 +81,7 @@ export class StatsStore {
          correct: totalCorrect,
          incorrect: totalIncorrect,
          total,
-         ratio: `${Math.round((totalCorrect / total) * 100)}%`,
+         ratio: `${Math.round((totalCorrect / total) * 10000) / 100}%`,
       };
 
       return [...generationsData, totalData];

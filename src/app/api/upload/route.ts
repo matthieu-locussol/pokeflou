@@ -6,6 +6,8 @@ export async function POST(req: Request) {
       const formData = await req.formData();
 
       const userId = z.string().parse(formData.get('userId'));
+      const firstname = z.string().parse(formData.get('firstname'));
+      const lastname = z.string().parse(formData.get('lastname'));
       const pokemonId = z.string().parse(formData.get('pokemonId'));
       const won = z.string().parse(formData.get('won')) === 'true';
       const blurredIdx = +z.string().parse(formData.get('blurredIdx'));
@@ -20,6 +22,8 @@ export async function POST(req: Request) {
          await prisma.user.create({
             data: {
                kindeId: userId,
+               firstname,
+               lastname,
                guesses: {
                   create: {
                      pokemonId,

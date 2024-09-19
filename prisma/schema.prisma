@@ -39,7 +39,9 @@ model Pokemon {
 model User {
   id String @id @default(cuid())
 
-  kindeId String
+  kindeId   String
+  firstname String
+  lastname  String
 
   guesses Guess[]
 
