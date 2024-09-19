@@ -1,10 +1,15 @@
 import { getKindeServerSession } from '@kinde-oss/kinde-auth-nextjs/server';
+import { redirect } from 'next/navigation';
 import { StatsTable } from '../../components/stats-table';
 import { prisma } from '../../prisma';
 
 export default async function Stats() {
    const { getUser } = getKindeServerSession();
-   const { id } = await getUser();
+
+   const kindeUser = await getUser();
+   if (kindeUser === null) {
+      redirect('/');
+   }
 
    const user = await prisma.user.findUnique({
       select: {
@@ -20,7 +25,7 @@ export default async function Stats() {
          },
       },
       where: {
-         kindeId: id,
+         kindeId: kindeUser.id,
       },
    });
 

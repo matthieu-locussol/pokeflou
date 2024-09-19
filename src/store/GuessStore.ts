@@ -29,9 +29,11 @@ export class GuessStore {
 
       this._fetcher = fetcher;
 
-      const savedGenerations = localStorage.getItem('generations');
-      if (savedGenerations !== null) {
-         this.generations = JSON.parse(savedGenerations);
+      if (typeof window !== 'undefined') {
+         const savedGenerations = localStorage.getItem('generations');
+         if (savedGenerations !== null) {
+            this.generations = JSON.parse(savedGenerations);
+         }
       }
    }
 
@@ -117,7 +119,9 @@ export class GuessStore {
          this.generations = this.generations.filter((g) => g !== generation);
       }
 
-      localStorage.setItem('generations', JSON.stringify(this.generations));
+      if (typeof window !== 'undefined') {
+         localStorage.setItem('generations', JSON.stringify(this.generations));
+      }
    }
 
    public get canStartGame(): boolean {
