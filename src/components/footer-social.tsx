@@ -6,6 +6,7 @@ import { cn } from '@nextui-org/theme';
 
 import { siteConfig } from '../config/site';
 
+import { LanguageSwitch } from './language-switch';
 import { ThemeSwitch } from './theme-switch';
 
 export const FooterSocial = ({
@@ -18,6 +19,7 @@ export const FooterSocial = ({
             <Icon className="text-2xl text-default-500" icon="ic:baseline-discord" />
          </Link>
          <ThemeSwitch />
+         <LanguageSwitch />
       </div>
    );
 };

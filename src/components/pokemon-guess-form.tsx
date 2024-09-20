@@ -5,17 +5,24 @@ import { Input } from '@nextui-org/input';
 import { observer } from 'mobx-react-lite';
 import { FormEvent } from 'react';
 import { useSaveUserData } from '../hooks/useSaveUserData';
+import { useTranslation } from '../i18n/client';
+import { Language } from '../i18n/config';
 import { useStore } from '../store';
 import { ActionBar } from './action-bar';
 
-export const PokemonGuessForm = observer(() => {
+interface PokemonGuessFormProps {
+   lang: Language;
+}
+
+export const PokemonGuessForm = observer(({ lang }: PokemonGuessFormProps) => {
    const { guessStore } = useStore();
    const { saveUserData } = useSaveUserData();
+   const { t } = useTranslation(lang);
 
    const onSubmit = (e: FormEvent<HTMLFormElement>) => {
       e.preventDefault();
 
-      guessStore.guess();
+      guessStore.guess(lang);
       saveUserData();
    };
 
@@ -34,9 +41,9 @@ export const PokemonGuessForm = observer(() => {
             onChange={(e) => guessStore.setNameInput(e.target.value)}
             value={guessStore.nameInput}
             startContent={<Icon icon="solar:question-circle-bold-duotone" className="text-2xl" />}
-            description='E.g. "Bulbizarre", "pikachu", "RAYQUAZA"...'
+            description={t('nameInputDescription')}
          />
-         <ActionBar />
+         <ActionBar lang={lang} />
       </form>
    );
 });

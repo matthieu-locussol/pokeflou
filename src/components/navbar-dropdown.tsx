@@ -6,13 +6,18 @@ import { Dropdown, DropdownItem, DropdownMenu, DropdownTrigger } from '@nextui-o
 import { link as linkStyles } from '@nextui-org/theme';
 import clsx from 'clsx';
 
+import { useTranslation } from '../i18n/client';
+import { Language } from '../i18n/config';
 import { CustomIcon } from './icons';
 
 interface NavbarDropdownProps extends Omit<DropdownProps, 'children'> {
    item: NavItem;
+   lang: Language;
 }
 
-export const NavbarDropdown = ({ item, ...rest }: NavbarDropdownProps) => {
+export const NavbarDropdown = ({ item, lang, ...rest }: NavbarDropdownProps) => {
+   const { t } = useTranslation(lang);
+
    return (
       <Dropdown
          showArrow
@@ -32,7 +37,7 @@ export const NavbarDropdown = ({ item, ...rest }: NavbarDropdownProps) => {
                   'cursor-pointer data-[active=true]:text-primary data-[active=true]:font-medium',
                )}
             >
-               {item.label}
+               {t(item.label)}
                <Icon className="w-4 ml-1" icon="lucide:chevron-down" />
             </li>
          </DropdownTrigger>
@@ -47,11 +52,11 @@ export const NavbarDropdown = ({ item, ...rest }: NavbarDropdownProps) => {
                {item.subItems.map((subItem) => (
                   <DropdownItem
                      key={subItem.label}
-                     description={subItem.description}
+                     description={t(subItem.description || '')}
                      href={subItem.href}
                      startContent={<CustomIcon icon={subItem.icon} />}
                   >
-                     {subItem.label}
+                     {t(subItem.label)}
                   </DropdownItem>
                ))}
             </DropdownMenu>

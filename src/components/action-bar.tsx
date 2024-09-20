@@ -3,20 +3,27 @@
 import { Button } from '@nextui-org/button';
 import { CircularProgress } from '@nextui-org/progress';
 import { observer } from 'mobx-react-lite';
+import { useTranslation } from '../i18n/client';
+import { Language } from '../i18n/config';
 import { useStore } from '../store';
 import { ButtonNoIdea } from './button-no-idea';
 
-export const ActionBar = observer(() => {
+interface ActionBarProps {
+   lang: Language;
+}
+
+export const ActionBar = observer(({ lang }: ActionBarProps) => {
    const { guessStore } = useStore();
+   const { t } = useTranslation(lang);
 
    return (
       <div className="flex justify-between gap-4">
          {guessStore.canGuess && (
             <>
                <Button variant="shadow" color="primary" radius="sm" size="lg" type="submit">
-                  Submit
+                  {t('submit')}
                </Button>
-               <ButtonNoIdea />
+               <ButtonNoIdea>{t('noIdea')}</ButtonNoIdea>
             </>
          )}
          {!guessStore.canGuess && (
@@ -39,7 +46,7 @@ export const ActionBar = observer(() => {
                      }}
                   />
                ) : (
-                  guessStore.newGuessDisplayedText
+                  t(guessStore.newGuessDisplayedText)
                )}
             </Button>
          )}

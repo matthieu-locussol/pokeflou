@@ -5,7 +5,7 @@ import { Footer } from '../../components/footer';
 import { Navbar } from '../../components/navbar';
 import { pokemonFont } from '../../config/fonts';
 import { getMetadata } from '../../config/metadata';
-import { LANGUAGES } from '../../i18n/config';
+import { Language, LANGUAGES } from '../../i18n/config';
 import '../../styles/globals.css';
 import { Providers } from '../providers';
 
@@ -19,11 +19,11 @@ export const viewport: Viewport = {
 };
 
 export async function generateStaticParams() {
-   return LANGUAGES.map((lang) => ({ lang }));
+   return LANGUAGES;
 }
 
 interface Params {
-   lang: string;
+   lang: Language;
 }
 
 interface RootLayoutProps {
@@ -31,7 +31,7 @@ interface RootLayoutProps {
    params: Params;
 }
 
-export default function RootLayout({ children, params: { lang } }: RootLayoutProps) {
+export default async function RootLayout({ children, params: { lang } }: RootLayoutProps) {
    return (
       <html suppressHydrationWarning lang={lang} dir={dir(lang)}>
          <head />
@@ -43,11 +43,11 @@ export default function RootLayout({ children, params: { lang } }: RootLayoutPro
          >
             <Providers themeProps={{ attribute: 'class', defaultTheme: 'dark' }}>
                <div className="relative flex flex-col min-h-screen">
-                  <Navbar />
+                  <Navbar lang={lang} />
                   <main className="flex w-full justify-center mx-auto flex-grow" role="main">
                      {children}
                   </main>
-                  <Footer />
+                  <Footer lang={lang} />
                </div>
             </Providers>
          </body>

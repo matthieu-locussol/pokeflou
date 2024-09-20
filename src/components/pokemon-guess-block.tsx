@@ -1,6 +1,7 @@
 'use client';
 
 import { observer } from 'mobx-react-lite';
+import { Language } from '../i18n/config';
 import { useStore } from '../store';
 import { _assert } from '../utils/_assert';
 import { formatPokemonId } from '../utils/numberMgt';
@@ -8,7 +9,11 @@ import { PokemonCard } from './pokemon-card';
 import { PokemonGuessForm } from './pokemon-guess-form';
 import { PokemonLoadingCard } from './pokemon-loading-card';
 
-export const PokemonGuessBlock = observer(() => {
+interface PokemonGuessBlockProps {
+   lang: Language;
+}
+
+export const PokemonGuessBlock = observer(({ lang }: PokemonGuessBlockProps) => {
    const { guessStore } = useStore();
 
    if (guessStore.loading) {
@@ -16,7 +21,7 @@ export const PokemonGuessBlock = observer(() => {
          <>
             <PokemonLoadingCard />
             <h2 className="text-center tracking-widest text-success-500 font-bold text-lg">???</h2>
-            <PokemonGuessForm />
+            <PokemonGuessForm lang={lang} />
          </>
       );
    }
@@ -27,7 +32,7 @@ export const PokemonGuessBlock = observer(() => {
       <>
          <PokemonCard pokemon={guessStore.pokemon} />
          <h2 className="text-center tracking-widest font-bold text-lg text-success-500">
-            {guessStore.displayedName}
+            {guessStore.displayedNames[lang]}
             {!guessStore.canGuess && (
                <span className="text-foreground-500">
                   {' '}
@@ -35,7 +40,7 @@ export const PokemonGuessBlock = observer(() => {
                </span>
             )}
          </h2>
-         <PokemonGuessForm />
+         <PokemonGuessForm lang={lang} />
       </>
    );
 });

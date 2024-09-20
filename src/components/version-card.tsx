@@ -1,15 +1,21 @@
+'use client';
+
 import { Checkbox } from '@nextui-org/checkbox';
 import { cn } from '@nextui-org/theme';
 import { observer } from 'mobx-react-lite';
 import Image from 'next/image';
+import { useTranslation } from '../i18n/client';
+import { Language } from '../i18n/config';
 import { useStore } from '../store';
 
 interface VersionCardProps {
    generation: number;
+   lang: Language;
 }
 
-export const VersionCard = observer(({ generation }: VersionCardProps) => {
+export const VersionCard = observer(({ generation, lang }: VersionCardProps) => {
    const { guessStore } = useStore();
+   const { t } = useTranslation(lang);
 
    return (
       <Checkbox
@@ -26,7 +32,7 @@ export const VersionCard = observer(({ generation }: VersionCardProps) => {
          isSelected={guessStore.generations.includes(generation)}
          onValueChange={(checked) => guessStore.setGeneration(generation, checked)}
       >
-         <div className="w-full flex flex-col justify-between gap-2">
+         <div className="w-full flex flex-col items-center justify-between gap-2">
             <Image
                src={`/releases/gen_${generation}.jpg`}
                alt={`Generation ${generation} cover`}
@@ -35,7 +41,7 @@ export const VersionCard = observer(({ generation }: VersionCardProps) => {
                className="rounded-md"
                priority
             />
-            <h2 className="text-center">Generation {generation}</h2>
+            <h2 className="text-center">{t('generationLong', { generation })}</h2>
          </div>
       </Checkbox>
    );

@@ -1,12 +1,12 @@
 'use client';
 
-import { Button } from '@nextui-org/button';
+import { Button, ButtonProps } from '@nextui-org/button';
 
 import { observer } from 'mobx-react-lite';
 import { useSaveUserData } from '../hooks/useSaveUserData';
 import { useStore } from '../store';
 
-export const ButtonNoIdea = observer(() => {
+export const ButtonNoIdea = observer((props: ButtonProps) => {
    const { guessStore } = useStore();
    const { saveUserData } = useSaveUserData();
 
@@ -22,8 +22,7 @@ export const ButtonNoIdea = observer(() => {
             guessStore.unpixelate();
             saveUserData();
          }}
-      >
-         I don&apos;t know
-      </Button>
+         {...props}
+      />
    );
 });

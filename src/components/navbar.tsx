@@ -3,7 +3,6 @@
 import { Icon } from '@iconify/react';
 import { LoginLink, LogoutLink, useKindeBrowserClient } from '@kinde-oss/kinde-auth-nextjs';
 import { Button } from '@nextui-org/button';
-import { Link } from '@nextui-org/link';
 import {
    NavbarBrand,
    NavbarContent,
@@ -16,10 +15,12 @@ import {
 import { Spinner } from '@nextui-org/spinner';
 import { observer } from 'mobx-react-lite';
 import NextLink from 'next/link';
-import { usePathname } from 'next/navigation';
 import { siteConfig } from '../config/site';
+import { useTranslation } from '../i18n/client';
+import { Language } from '../i18n/config';
 import { useStore } from '../store';
 import { CustomIcon } from './icons';
+import { LanguageSwitch } from './language-switch';
 import { Logo } from './logo';
 import { NavbarDropdown } from './navbar-dropdown';
 import { NavbarLink } from './navbar-link';
@@ -28,11 +29,15 @@ import { NavbarMenuLink } from './navbar-menu-link';
 import { ThemeSwitch } from './theme-switch';
 import { UserMenu } from './user-menu';
 
-export const Navbar = observer(() => {
+interface NavbarProps {
+   lang: Language;
+}
+
+export const Navbar = observer(({ lang }: NavbarProps) => {
    const { menuStore } = useStore();
    const { getUser, isLoading, isAuthenticated } = useKindeBrowserClient();
    const user = getUser();
-   const path = usePathname();
+   const { t } = useTranslation(lang);
 
    const NavbarEndItems = () => {
       return (
@@ -43,19 +48,21 @@ export const Navbar = observer(() => {
                </NavbarItem>
             ) : isAuthenticated ? (
                <NavbarItem as="li" className="hidden md:flex">
-                  <UserMenu />
+                  <UserMenu lang={lang} />
                </NavbarItem>
             ) : (
                <LoginLink>
                   <Button className="text-small" color="primary" radius="sm" size="sm">
-                     Login
+                     {t('login')}
                   </Button>
                </LoginLink>
             )}
             <NavbarItem as="li" className="hidden sm:flex">
                <ThemeSwitch />
             </NavbarItem>
-            <Link href="">{path}</Link>
+            <NavbarItem as="li" className="hidden sm:flex">
+               <LanguageSwitch />
+            </NavbarItem>
          </>
       );
    };
@@ -92,9 +99,10 @@ export const Navbar = observer(() => {
                      as="li"
                      isVisible={item.isVisible?.(isLoading, isAuthenticated)}
                      item={item}
+                     lang={lang}
                   />
                ) : (
-                  <NavbarDropdown key={item.href} as="li" item={item} />
+                  <NavbarDropdown key={item.href} as="li" item={item} lang={lang} />
                ),
             )}
             <NavbarEndItems />
@@ -113,9 +121,10 @@ export const Navbar = observer(() => {
                         as="li"
                         isVisible={item.isVisible?.(isLoading, isAuthenticated)}
                         item={item}
+                        lang={lang}
                      />
                   ) : (
-                     <NavbarDropdown key={item.href} as="li" item={item} />
+                     <NavbarDropdown key={item.href} as="li" item={item} lang={lang} />
                   ),
                )}
             <NavbarEndItems />
@@ -145,6 +154,7 @@ export const Navbar = observer(() => {
                      isVisible={item.isVisible?.(isLoading, isAuthenticated)}
                      item={item}
                      onClick={() => menuStore.setOpen(false)}
+                     lang={lang}
                   />
                ) : (
                   <NavbarMenuDropdownLink
@@ -153,6 +163,7 @@ export const Navbar = observer(() => {
                      isAuthenticated={isAuthenticated}
                      isLoading={isLoading}
                      item={item}
+                     lang={lang}
                   />
                ),
             )}
@@ -163,7 +174,7 @@ export const Navbar = observer(() => {
                      onClick={() => menuStore.setOpen(false)}
                   >
                      <CustomIcon className="text-primary-500" icon="solar:login-3-bold-duotone" />
-                     &nbsp;&nbsp;Login
+                     &nbsp;&nbsp;{t('login')}
                   </LoginLink>
                </NavbarMenuItem>
             ) : (
@@ -173,7 +184,7 @@ export const Navbar = observer(() => {
                      onClick={() => menuStore.setOpen(false)}
                   >
                      <CustomIcon className="text-danger" icon="solar:logout-2-bold-duotone" />
-                     &nbsp;&nbsp;Logout
+                     &nbsp;&nbsp;{t('logout')}
                   </LogoutLink>
                </NavbarMenuItem>
             )}

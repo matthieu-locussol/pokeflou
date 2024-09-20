@@ -1,7 +1,17 @@
 import { GuessStats, LeaderboardTable } from '../../../components/leaderboard-table';
+import { useTranslation } from '../../../i18n';
+import { Language } from '../../../i18n/config';
 import { prisma } from '../../../prisma';
 
-export default async function Leaderboard() {
+interface LeaderboardProps {
+   params: {
+      lang: Language;
+   };
+}
+
+export default async function Leaderboard({ params: { lang } }: LeaderboardProps) {
+   const { t } = await useTranslation(lang);
+
    const data = await prisma.$queryRaw<GuessStats[]>`
       SELECT
       "firstname",
@@ -22,8 +32,10 @@ export default async function Leaderboard() {
 
    return (
       <section className="flex flex-col py-4 px-0 md:p-8 max-w-4xl w-full">
-         <h1 className="text-center text-2xl">Leaderboard</h1>
-         <h2 className="text-center text-md mb-4 italic text-default-500">Top 100 players</h2>
+         <h1 className="text-center text-2xl">{t('leaderboard')}</h1>
+         <h2 className="text-center text-md mb-4 italic text-default-500">
+            {t('leaderboardTop100')}
+         </h2>
          <LeaderboardTable
             data={data.map(
                ({
@@ -42,6 +54,7 @@ export default async function Leaderboard() {
                   correctGuessPercentage: Number(correctGuessPercentage),
                }),
             )}
+            lang={lang}
          />
       </section>
    );

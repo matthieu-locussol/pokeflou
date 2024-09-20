@@ -16,11 +16,7 @@ const initI18next = async (lang: Language) => {
    return i18nInstance;
 };
 
-interface UseTranslationProps {
-   lang: Language;
-}
-
-export const useTranslation = async ({ lang }: UseTranslationProps) => {
+export const useTranslation = async (lang: Language) => {
    const i18nextInstance = await initI18next(lang);
 
    return {

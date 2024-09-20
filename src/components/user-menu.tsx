@@ -14,9 +14,16 @@ import { User } from '@nextui-org/user';
 
 import { siteConfig } from '../config/site';
 
+import { useTranslation } from '../i18n/client';
+import { Language } from '../i18n/config';
 import { CustomIcon } from './icons';
 
-export const UserMenu = () => {
+interface UserMenuProps {
+   lang: Language;
+}
+
+export const UserMenu = ({ lang }: UserMenuProps) => {
+   const { t } = useTranslation(lang);
    const { getUser, isLoading, isAuthenticated } = useKindeBrowserClient();
    const user = getUser();
    const hash = createHash('sha256')
@@ -68,11 +75,11 @@ export const UserMenu = () => {
                      {section.map((item) => (
                         <DropdownItem
                            key={`section-${item.label}`}
-                           description={item.description}
+                           description={t(item.description || '')}
                            href={item.href}
                            startContent={<CustomIcon icon={item.icon} />}
                         >
-                           {item.label}
+                           {t(item.label)}
                         </DropdownItem>
                      ))}
                   </DropdownSection>
@@ -86,7 +93,7 @@ export const UserMenu = () => {
                         <CustomIcon className="text-danger" icon="solar:logout-2-bold-duotone" />
                      }
                   >
-                     <LogoutLink>Logout</LogoutLink>
+                     <LogoutLink>{t('logout')}</LogoutLink>
                   </DropdownItem>
                </DropdownSection>,
             ]}

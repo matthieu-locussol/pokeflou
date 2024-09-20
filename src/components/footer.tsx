@@ -1,13 +1,19 @@
 import { Link } from '@nextui-org/link';
 import { default as NextLink } from 'next/link';
-
 import { siteConfig } from '../config/site';
+import { useTranslation } from '../i18n';
+import { Language } from '../i18n/config';
 import { getVersion } from '../utils/versionMgt';
-
 import { FooterSocial } from './footer-social';
 import { Logo } from './logo';
 
-export const Footer = () => {
+interface FooterProps {
+   lang: Language;
+}
+
+export const Footer = async ({ lang }: FooterProps) => {
+   const { t } = await useTranslation(lang);
+
    return (
       <footer
          className="w-full justify-center items-center flex border-t-1 border-primary-100 bg-primary-50/80"
@@ -23,7 +29,7 @@ export const Footer = () => {
                      </p>
                   </NextLink>
                   <p className="font-bold text-xs italic text-default-500">
-                     {getVersion('Build v')}
+                     {getVersion(t('build'))}
                   </p>
                </div>
                <FooterSocial />
@@ -34,7 +40,7 @@ export const Footer = () => {
                rel="noreferrer"
                target="_blank"
             >
-               Made with ❤️ from France
+               {t('madeWith')}
             </Link>
          </div>
       </footer>

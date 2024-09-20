@@ -61,7 +61,7 @@ export class StatsStore {
          const total = correct + incorrect;
 
          return {
-            generation: `Gen. ${idx + 1}`,
+            generation: idx + 1,
             correct,
             incorrect,
             total,
@@ -77,7 +77,7 @@ export class StatsStore {
       const total = totalCorrect + totalIncorrect;
 
       const totalData = {
-         generation: 'TOTAL',
+         generation: 'total',
          correct: totalCorrect,
          incorrect: totalIncorrect,
          total,

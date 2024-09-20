@@ -1,6 +1,7 @@
 import { Pokemon } from '@prisma/client';
 import { makeAutoObservable, runInAction } from 'mobx';
 import { IPokemonFetcher } from '../adapters/PokemonFetcher';
+import { Language } from '../i18n/config';
 import { decodePokemonName, formatPokemonName, toUpperCaseFirst } from '../utils/stringMgt';
 
 export class GuessStore {
@@ -77,8 +78,8 @@ export class GuessStore {
       this.nameInput = nameInput;
    }
 
-   public isNameValid(): boolean {
-      return this.pokemonValidName === formatPokemonName(this.nameInput);
+   public isNameValid(lang: Language): boolean {
+      return this.getPokemonValidName(lang) === formatPokemonName(this.nameInput);
    }
 
    public setValidResult() {
@@ -96,8 +97,8 @@ export class GuessStore {
       }, 2800);
    }
 
-   public guess() {
-      if (this.isNameValid()) {
+   public guess(lang: Language) {
+      if (this.isNameValid(lang)) {
          this.setValidResult();
       } else {
          this.unpixelate();
@@ -132,21 +133,35 @@ export class GuessStore {
       return this.blurredIdx < 5;
    }
 
-   public get displayedName(): string {
-      if (this.canGuess) {
-         return '???';
+   public get displayedNames() {
+      if (this.canGuess || this.pokemon === null) {
+         return {
+            en: '???',
+            ja: '???',
+            ko: '???',
+            zh: '???',
+            fr: '???',
+            de: '???',
+            it: '???',
+            es: '???',
+         };
       }
 
-      if (this.pokemon === null) {
-         return '???';
-      }
-
-      return toUpperCaseFirst(decodePokemonName(this.pokemon.name_fr));
+      return {
+         en: toUpperCaseFirst(decodePokemonName(this.pokemon.name_en)),
+         ja: toUpperCaseFirst(decodePokemonName(this.pokemon.name_ja)),
+         ko: toUpperCaseFirst(decodePokemonName(this.pokemon.name_ko)),
+         zh: toUpperCaseFirst(decodePokemonName(this.pokemon.name_zh)),
+         fr: toUpperCaseFirst(decodePokemonName(this.pokemon.name_fr)),
+         de: toUpperCaseFirst(decodePokemonName(this.pokemon.name_de)),
+         it: toUpperCaseFirst(decodePokemonName(this.pokemon.name_it)),
+         es: toUpperCaseFirst(decodePokemonName(this.pokemon.name_es)),
+      };
    }
 
    public get newGuessDisplayedText(): string {
       if (this.countdown === 0) {
-         return 'New guess';
+         return 'newGuess';
       }
 
       return `${this.countdown}s...`;
@@ -156,11 +171,22 @@ export class GuessStore {
       return this.countdown === 0 && !this.loading;
    }
 
-   public get pokemonValidName(): string {
+   public getPokemonValidName(lang: Language): string {
       if (this.pokemon === null) {
          return '???';
       }
 
-      return formatPokemonName(decodePokemonName(this.pokemon.name_fr));
+      const name = {
+         en: this.pokemon.name_en,
+         ja: this.pokemon.name_ja,
+         ko: this.pokemon.name_ko,
+         zh: this.pokemon.name_zh,
+         fr: this.pokemon.name_fr,
+         de: this.pokemon.name_de,
+         it: this.pokemon.name_it,
+         es: this.pokemon.name_es,
+      }[lang];
+
+      return formatPokemonName(decodePokemonName(name));
    }
 }

@@ -6,13 +6,18 @@ import { NavbarItem } from '@nextui-org/navbar';
 import { link as linkStyles } from '@nextui-org/theme';
 import clsx from 'clsx';
 import NextLink from 'next/link';
+import { useTranslation } from '../i18n/client';
+import { Language } from '../i18n/config';
 
 interface NavbarLinkProps extends NavbarItemProps {
    item: NavItemBase;
    isVisible?: boolean | null | undefined;
+   lang: Language;
 }
 
-export const NavbarLink = ({ item, isVisible, ...rest }: NavbarLinkProps) => {
+export const NavbarLink = ({ item, isVisible, lang, ...rest }: NavbarLinkProps) => {
+   const { t } = useTranslation(lang);
+
    if (!isVisible) {
       return <></>;
    }
@@ -27,7 +32,7 @@ export const NavbarLink = ({ item, isVisible, ...rest }: NavbarLinkProps) => {
             color="foreground"
             href={item.href}
          >
-            {item.label}
+            {t(item.label)}
             {item.badge && (
                <Chip className="ml-2" color="primary" radius="sm" size="sm">
                   {item.badge}
