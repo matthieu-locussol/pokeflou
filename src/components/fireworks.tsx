@@ -1,3 +1,5 @@
+'use client';
+
 import { observer } from 'mobx-react-lite';
 import Confetti from 'react-canvas-confetti/dist/presets/fireworks';
 import { useStore } from '../store';

@@ -3,6 +3,7 @@
 import { Icon } from '@iconify/react';
 import { LoginLink, LogoutLink, useKindeBrowserClient } from '@kinde-oss/kinde-auth-nextjs';
 import { Button } from '@nextui-org/button';
+import { Link } from '@nextui-org/link';
 import {
    NavbarBrand,
    NavbarContent,
@@ -15,23 +16,23 @@ import {
 import { Spinner } from '@nextui-org/spinner';
 import { observer } from 'mobx-react-lite';
 import NextLink from 'next/link';
-
+import { usePathname } from 'next/navigation';
 import { siteConfig } from '../config/site';
 import { useStore } from '../store';
-import { ThemeSwitch } from './theme-switch';
-
 import { CustomIcon } from './icons';
 import { Logo } from './logo';
 import { NavbarDropdown } from './navbar-dropdown';
 import { NavbarLink } from './navbar-link';
 import { NavbarMenuDropdownLink } from './navbar-menu-dropdown';
 import { NavbarMenuLink } from './navbar-menu-link';
+import { ThemeSwitch } from './theme-switch';
 import { UserMenu } from './user-menu';
 
 export const Navbar = observer(() => {
    const { menuStore } = useStore();
    const { getUser, isLoading, isAuthenticated } = useKindeBrowserClient();
    const user = getUser();
+   const path = usePathname();
 
    const NavbarEndItems = () => {
       return (
@@ -54,6 +55,7 @@ export const Navbar = observer(() => {
             <NavbarItem as="li" className="hidden sm:flex">
                <ThemeSwitch />
             </NavbarItem>
+            <Link href="">{path}</Link>
          </>
       );
    };

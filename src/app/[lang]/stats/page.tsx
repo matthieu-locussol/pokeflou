@@ -1,7 +1,7 @@
 import { getKindeServerSession } from '@kinde-oss/kinde-auth-nextjs/server';
 import { redirect } from 'next/navigation';
-import { StatsTable } from '../../components/stats-table';
-import { prisma } from '../../prisma';
+import { StatsTable } from '../../../components/stats-table';
+import { prisma } from '../../../prisma';
 
 export default async function Stats() {
    const { getUser } = getKindeServerSession();

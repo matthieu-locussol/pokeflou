@@ -1,14 +1,13 @@
-import type { Viewport } from 'next';
-
 import clsx from 'clsx';
-import '../styles/globals.css';
-
-import { Footer } from '../components/footer';
-import { Navbar } from '../components/navbar';
-import { pokemonFont } from '../config/fonts';
-import { getMetadata } from '../config/metadata';
-
-import { Providers } from './providers';
+import { dir } from 'i18next';
+import type { Viewport } from 'next';
+import { Footer } from '../../components/footer';
+import { Navbar } from '../../components/navbar';
+import { pokemonFont } from '../../config/fonts';
+import { getMetadata } from '../../config/metadata';
+import { LANGUAGES } from '../../i18n/config';
+import '../../styles/globals.css';
+import { Providers } from '../providers';
 
 export const metadata = getMetadata();
 
@@ -19,9 +18,22 @@ export const viewport: Viewport = {
    ],
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export async function generateStaticParams() {
+   return LANGUAGES.map((lang) => ({ lang }));
+}
+
+interface Params {
+   lang: string;
+}
+
+interface RootLayoutProps {
+   children: React.ReactNode;
+   params: Params;
+}
+
+export default function RootLayout({ children, params: { lang } }: RootLayoutProps) {
    return (
-      <html suppressHydrationWarning lang="en">
+      <html suppressHydrationWarning lang={lang} dir={dir(lang)}>
          <head />
          <body
             className={clsx(

@@ -1,5 +1,5 @@
-import { GuessStats, LeaderboardTable } from '../../components/leaderboard-table';
-import { prisma } from '../../prisma';
+import { GuessStats, LeaderboardTable } from '../../../components/leaderboard-table';
+import { prisma } from '../../../prisma';
 
 export default async function Leaderboard() {
    const data = await prisma.$queryRaw<GuessStats[]>`
@@ -24,7 +24,25 @@ export default async function Leaderboard() {
       <section className="flex flex-col py-4 px-0 md:p-8 max-w-4xl w-full">
          <h1 className="text-center text-2xl">Leaderboard</h1>
          <h2 className="text-center text-md mb-4 italic text-default-500">Top 100 players</h2>
-         <LeaderboardTable data={data} />
+         <LeaderboardTable
+            data={data.map(
+               ({
+                  firstname,
+                  lastname,
+                  totalGuesses,
+                  correctGuesses,
+                  incorrectGuesses,
+                  correctGuessPercentage,
+               }) => ({
+                  firstname,
+                  lastname,
+                  totalGuesses: Number(totalGuesses),
+                  correctGuesses: Number(correctGuesses),
+                  incorrectGuesses: Number(incorrectGuesses),
+                  correctGuessPercentage: Number(correctGuessPercentage),
+               }),
+            )}
+         />
       </section>
    );
 }
