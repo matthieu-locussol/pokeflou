@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { decodePokemonName, toUpperCaseFirst } from './stringMgt';
+import { decodePokemonName, formatPokemonName, toUpperCaseFirst } from './stringMgt';
 
 describe('stringMgt', () => {
    describe('decodePokemonName', () => {
@@ -34,6 +34,41 @@ describe('stringMgt', () => {
          const results = strings.map((str) => toUpperCaseFirst(str));
 
          results.forEach((result, index) => expect(result).toBe(expectedResults[index]));
+      });
+   });
+
+   describe('formatPokemonName', () => {
+      const samples = [
+         {
+            pokemonName: 'Bulbizarre',
+            expected: 'bulbizarre',
+         },
+         {
+            pokemonName: 'PikAchu',
+            expected: 'pikachu',
+         },
+         {
+            pokemonName: 'RAYQUAZA',
+            expected: 'rayquaza',
+         },
+         {
+            pokemonName: 'Nidoran♀',
+            expected: 'nidoran',
+         },
+         {
+            pokemonName: 'Nidoran♂',
+            expected: 'nidoran',
+         },
+         {
+            pokemonName: 'M. Mime',
+            expected: 'm. mime',
+         },
+      ];
+
+      samples.forEach(({ pokemonName, expected }) => {
+         it(`${pokemonName} -> ${expected}`, () => {
+            expect(formatPokemonName(pokemonName)).toEqual(expected);
+         });
       });
    });
 });

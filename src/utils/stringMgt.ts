@@ -10,5 +10,6 @@ export const formatPokemonName = (name: string): string => {
    return name
       .toLocaleLowerCase()
       .normalize('NFD')
-      .replace(/[\u0300-\u036f]/g, '');
+      .replace(/[\u0300-\u036f]/g, '')
+      .replace(/(♀|♂)/g, '');
 };
