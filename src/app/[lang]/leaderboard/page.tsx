@@ -14,15 +14,15 @@ export default async function Leaderboard({ params: { lang } }: LeaderboardProps
 
    const data = await prisma.$queryRaw<GuessStats[]>`
       SELECT
-      "firstname",
-      "lastname",
-      SUM(CASE WHEN "won" = TRUE THEN 1 ELSE 0 END) AS "correctGuesses",
-      SUM(CASE WHEN "won" = FALSE THEN 1 ELSE 0 END) AS "incorrectGuesses",
-      COUNT(*) AS "totalGuesses",
-      ROUND(
-         (SUM(CASE WHEN "won" = TRUE THEN 1 ELSE 0 END) * 100.0) / COUNT(*),
-         2
-      ) AS "correctGuessPercentage"
+         "firstname",
+         "lastname",
+         SUM(CASE WHEN "won" = TRUE THEN 1 ELSE 0 END) AS "correctGuesses",
+         SUM(CASE WHEN "won" = FALSE THEN 1 ELSE 0 END) AS "incorrectGuesses",
+         COUNT(*) AS "totalGuesses",
+         ROUND(
+            (SUM(CASE WHEN "won" = TRUE THEN 1 ELSE 0 END) * 100.0) / COUNT(*),
+            2
+         ) AS "correctGuessPercentage"
       FROM "Guess" g
       LEFT JOIN "User" u ON u."kindeId" = g."userId"
       GROUP BY "userId", "firstname", "lastname"

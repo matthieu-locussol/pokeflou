@@ -22,7 +22,7 @@ export const Footer = async ({ lang }: FooterProps) => {
          <div className="container mx-auto max-w-7xl py-6 px-6 flex-grow">
             <div className="flex justify-between items-center">
                <div className="flex flex-col gap-1">
-                  <NextLink className="flex justify-start items-center gap-2" href="/">
+                  <NextLink className="flex justify-start items-center gap-2" href={`/${lang}`}>
                      <Logo />
                      <p className="font-bold text-md font-[family-name:var(--font-pokemon)]">
                         {siteConfig.title}
