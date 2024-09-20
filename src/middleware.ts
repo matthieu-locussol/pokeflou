@@ -3,9 +3,19 @@ import acceptLanguage from 'accept-language';
 import { NextResponse, type NextRequest } from 'next/server';
 import { COOKIE_NAME, FALLBACK_LANG, Language, LANGUAGES, zLanguage } from './i18n/config';
 
+const PUBLIC_FILE = /\.(.*)$/;
+
 acceptLanguage.languages(LANGUAGES.map((lang) => lang.toString()));
 
 export default function middleware(req: NextRequest) {
+   if (
+      req.nextUrl.pathname.startsWith('/_next') ||
+      req.nextUrl.pathname.includes('/api/') ||
+      PUBLIC_FILE.test(req.nextUrl.pathname)
+   ) {
+      return NextResponse.next();
+   }
+
    let lang: Language | undefined = undefined;
 
    if (req.cookies.has(COOKIE_NAME)) {
