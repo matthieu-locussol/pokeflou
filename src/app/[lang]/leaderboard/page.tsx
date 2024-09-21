@@ -3,6 +3,8 @@ import { useTranslation } from '../../../i18n';
 import { Language } from '../../../i18n/config';
 import { prisma } from '../../../prisma';
 
+export const dynamic = 'force-dynamic';
+
 interface LeaderboardProps {
    params: {
       lang: Language;
