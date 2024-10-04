@@ -28,7 +28,7 @@ export default async function Leaderboard({ params: { lang } }: LeaderboardProps
       FROM "Guess" g
       LEFT JOIN "User" u ON u."kindeId" = g."userId"
       GROUP BY "userId", "firstname", "lastname"
-      ORDER BY "totalGuesses", "correctGuessPercentage" DESC
+      ORDER BY "totalGuesses" DESC, "correctGuessPercentage" DESC
       LIMIT 100;
  `;
 
